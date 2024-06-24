@@ -1,0 +1,29 @@
+import itertools
+
+def solve_cryptarithmetic(puzzle):
+    # Split the puzzle into left, right sides and the result
+    left_side, right_side = puzzle.lower().replace(' ', '').split('=')
+    left_vars = ''.join(set(left_side))
+    right_vars = ''.join(set(right_side))
+    all_vars = ''.join(set(left_vars + right_vars))
+
+    # Generate permutations for the variables
+    for perm in itertools.permutations('1234567890', len(all_vars)):
+        mapping = dict(zip(all_vars, perm))
+
+        # Replace letters with corresponding digits
+        left = left_side.translate(str.maketrans(mapping))
+        right = right_side.translate(str.maketrans(mapping))
+        result = int(left) == int(right)
+
+        if result:
+            print(f"Solution found: {mapping}")
+            print(f"{left_side} = {right_side}")
+            break
+    else:
+        print("No solution found.")
+
+# Example usage:
+if __name__ == "__main__":
+    puzzle = "send + more = money"
+    solve_cryptarithmetic(puzzle)
